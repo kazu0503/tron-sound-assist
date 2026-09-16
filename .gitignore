@@ -1,0 +1,56 @@
+# ---- Third-party audio (redistribution not permitted) ----
+# 学習には使うが公開しない
+data/raw/
+data/japan/
+data/listen/
+data/device/
+playback/
+*.wav
+*.mp3
+*.zip
+
+# ---- Kit CD materials (Personal Media Corp. copyright) ----
+# 付属CDのマニュアル類は再配布不可
+manual_jpg/
+startup_text.txt
+cdram/
+
+# ---- Stale artifacts from the old librosa-based pipeline ----
+# 現行の train_device.py は特徴量をその場で計算するため不要
+data/processed/
+
+# ---- Build outputs ----
+*.exe
+*.o
+*.elf
+*.map
+
+# ---- Numerical validation temp files ----
+samples.txt
+ref.txt
+c_out.txt
+cnn_ref.txt
+cnn_c_out.txt
+e2e_ref.txt
+e2e_c.txt
+
+# ---- Superseded models ----
+# 現行で使うのは cnn_device.keras + device_norm.npz のみ
+models/*.joblib
+models/mlp_embedded.keras
+models/cnn_model.keras
+models/cnn_embedded.keras
+models/cnn_norm.npz
+models/embedded_norm.npz
+
+# ---- Helper scripts for reading the kit manual (not part of the work) ----
+src/convert_heic.py
+src/extract_pdf.py
+
+# ---- Raw cross-validation log (formatted into docs/EVALUATION.md) ----
+docs/_cv_result.txt
+
+# ---- Python ----
+venv/
+__pycache__/
+*.pyc
