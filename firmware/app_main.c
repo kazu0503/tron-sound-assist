@@ -42,6 +42,10 @@
 /* ---------------- 通知の後処理パラメータ ---------------- */
 #define CONF_TH     600             /* 確信度しきい値 (/1000) */
 #define AGREE_N     2               /* 連続何回一致したら通知するか */
+/* クラクションは1秒以内に鳴り終わる短い音で、2回連続の判定がほぼ起きない。
+ * そのため確信度がこの値以上なら1回で通知する(実測: はっきり鳴らした
+ * クラクション=987、静音時の単発誤判定=500前後)。 */
+#define HORN_SINGLE_TH  850
 #define HOLD_MS     3000            /* 通知を保持する時間 */
 
 /* ---------------- micro:bit v2 LEDマトリクス ---------------- */
@@ -201,6 +205,17 @@ static void infer_task(INT stacd, void *exinf)
 }
 
 /* ================= T_notify ================= */
+/* 通知するかどうか(音の種類ごとに条件を変える)
+ *   サイレン     : 鳴り続ける音なので、確信度600以上が2回連続したら
+ *   クラクション : 短い音なので、確信度850以上なら1回で。
+ *                  それ未満でも600以上が2回連続したら */
+static int should_alert(const RESULT *r, W run)
+{
+	if (r->cls == 0) return r->conf >= CONF_TH && run >= AGREE_N;
+	if (r->cls == 1) return r->conf >= HORN_SINGLE_TH || (r->conf >= CONF_TH && run >= AGREE_N);
+	return 0;
+}
+
 static void notify_task(INT stacd, void *exinf)
 {
 	RESULT r;
@@ -213,21 +228,27 @@ static void notify_task(INT stacd, void *exinf)
 	for (;;) {
 		sz = tk_rcv_mbf(mbf_result, &r, 100);   /* 100ms待ち */
 		if (sz == sizeof(r)) {
-			/* --- 後処理: 確信度が高く、同じ危険クラスがN回続いたら通知 --- */
+			/* --- 後処理: 音の種類ごとの条件を満たしたら通知 --- */
+			int alert;
 			if (r.cls == last) run++; else { last = r.cls; run = 1; }
+			alert = should_alert(&r, run);
 
 			tm_printf((UB*)"=> %s conf=%d (%dms) run=%d%s\n",
 				  names[r.cls], r.conf, r.ms, run,
-				  (r.cls != 2 && r.conf >= CONF_TH && run >= AGREE_N)
-				  ? (UB*)"  *** ALERT ***" : (UB*)"");
+				  alert ? (UB*)"  *** ALERT ***" : (UB*)"");
 
-			if (r.cls != 2 && r.conf >= CONF_TH && run >= AGREE_N) {
+			if (alert) {
 				alarm = r.cls;
 				hold = HOLD_MS;
 				led_row(r.cls == 0 ? 0 : 2);    /* siren=上段 horn=中段 */
-				if (r.cls == 0) { vib = VIB_SIREN; vlen = sizeof(VIB_SIREN); }
-				else            { vib = VIB_HORN;  vlen = sizeof(VIB_HORN); }
-				vpos = 0;                       /* 振動パターンを頭から再生 */
+				/* 同じ警報が続いている間は途中で頭出ししない(毎秒リセットすると
+				 * 「長く2回」が最後まで再生されず区別しにくくなるため)。
+				 * パターンを鳴らし終えたか、クラスが変わったときだけ頭から再生。 */
+				if (vib != (r.cls == 0 ? VIB_SIREN : VIB_HORN) || vpos >= vlen) {
+					if (r.cls == 0) { vib = VIB_SIREN; vlen = sizeof(VIB_SIREN); }
+					else            { vib = VIB_HORN;  vlen = sizeof(VIB_HORN); }
+					vpos = 0;
+				}
 			}
 		}
 
