@@ -24,6 +24,10 @@ micro:bit v2 + μT-Kernel 3.0
 
 ## 動作のようす
 
+**デモ動画（約50秒）：https://youtu.be/pyXOdZmFe1g**
+
+<img src="docs/images/wearing.jpg" alt="腕に着けた様子" width="400">
+
 ```
 => other conf=652 (340ms) run=3
 => SIREN conf=882 (340ms) run=2  *** ALERT ***   ← LED点灯・振動
@@ -32,8 +36,8 @@ micro:bit v2 + μT-Kernel 3.0
 
 | 検知した音 | 通知 |
 |---|---|
-| 緊急車両サイレン | LEDマトリクス 上段が点灯 ＋ 振動 |
-| クラクション | LEDマトリクス 中段が点灯 ＋ 振動 |
+| 緊急車両サイレン | LEDマトリクス 一番上の段が点灯 ＋ 長い振動2回 |
+| クラクション | LEDマトリクス 真ん中の段が点灯 ＋ 短い振動3回 |
 | その他の音・静音 | 通知しない |
 
 ---
