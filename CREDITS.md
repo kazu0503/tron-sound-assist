@@ -1,7 +1,6 @@
-# クレジット表記（使用した音源素材）
+# クレジット表記（音源素材と既存ソフトウェア）
 
-本プロジェクトの学習に使用した外部音源の出典。
-CC BY 等で表記が必要な素材はここに記載する。GitHub公開時はこのファイルを掲載する。
+本プロジェクトで使用した外部の音源素材と、他者が開発した既存ソフトウェアの一覧です。
 
 ## OtoLogic（CC BY 4.0 — 表記必須）
 効果音: **OtoLogic**（https://otologic.jp/）
@@ -33,10 +32,25 @@ CC BY 等で表記が必要な素材はここに記載する。GitHub公開時�
   録音内容には上記フリー音源をスピーカーで再生したものが含まれるため、
   再配布の可否を厳密に判断できない。よって**リポジトリには含めない**（.gitignore済み）。
 
-## ソフトウェア
-- **μT-Kernel 3.0** および micro:bit 向け BSP
-  … 「IoTエッジノード実践キット/micro:bit」（パーソナルメディア株式会社）付属のものを使用。
-  再配布不可のためリポジトリには含めていない。
+## ソフトウェア（他者が開発した既存ソフトウェア）
+
+| 名称 | 権利者 | 入手方法 | 用途 |
+|---|---|---|---|
+| μT-Kernel 3.0 と micro:bit 向け BSP | トロンフォーラム / パーソナルメディア株式会社 | 「IoTエッジノード実践キット/micro:bit」付属のCD | 実機で動かすリアルタイムOS |
+| GNU Arm Embedded Toolchain（arm-none-eabi-gcc、newlib の数学ライブラリ） | Arm Limited / Free Software Foundation ほか | Arm の公式サイト | ファームウェアのビルド、`expf`・`logf` などの数学関数 |
+| pyOCD | pyOCD の開発者（Apache License 2.0） | `pip install pyocd` | micro:bit への書き込み |
+| pySerial | Chris Liechti（BSD License） | `pip install pyserial` | シリアル出力の受信、録音データの取り込み |
+| TensorFlow / Keras | Google LLC ほか（Apache License 2.0） | `pip install tensorflow` | PC でのモデルの学習（実機では使わない） |
+| NumPy・SciPy・scikit-learn・librosa・soundfile・matplotlib | 各プロジェクトの開発者（BSD / ISC 系） | `pip install -r requirements.txt` | PC での音声処理・評価・図の作成 |
+
+μT-Kernel 3.0 と BSP はキットの利用条件により再配布できないため、リポジトリには含めていません。
+
+**実機（micro:bit）で動くアプリケーション部分は、すべて応募者が作成しました。**
+SAADC のドライバ、μT-Kernel のタスク構成、特徴量の抽出（FFT・メルフィルタ）、
+CNN の推論は手書きの C で実装しており、推論ライブラリは使っていません。
+
+上記の既存ソフトウェアは、それぞれのライセンスと利用条件に従って利用しており、
+著作権などの権利処理を行っていることを保証します。
 
 ---
 
