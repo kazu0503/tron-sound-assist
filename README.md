@@ -26,6 +26,8 @@ micro:bit v2 + μT-Kernel 3.0
 
 **デモ動画（約50秒）：https://youtu.be/pyXOdZmFe1g**
 
+**紹介資料（スライド）：[docs/slides.pdf](docs/slides.pdf)**
+
 <img src="docs/images/wearing.jpg" alt="腕に着けた様子" width="400">
 
 ```
