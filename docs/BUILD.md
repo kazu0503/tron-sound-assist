@@ -37,11 +37,11 @@ pip install pyocd pyserial
 
 ## 2. ソースの配置
 
-展開した μT-Kernel のツリーに、本リポジトリの `firmware/` の中身をコピーします。
+展開した μT-Kernel のツリーの `app_sample/` に、本リポジトリの `firmware/` から**次の4ファイルだけ**をコピーします。
 
 ```
 mtkernel_3/
-├── app_sample/          ← ここに firmware/ の中身を入れる
+├── app_sample/          ← ここに次の4ファイルを入れる
 │   ├── app_main.c       （本作品のアプリ本体：3タスク構成）
 │   ├── infer_mb.c       （特徴量抽出＋CNN推論）
 │   ├── infer_mb.h
@@ -54,8 +54,9 @@ mtkernel_3/
 > 必要なら退避しておいてください。
 > また `app_sample/*.c` は**すべてビルド対象**になるため、`usermain()` を持つ
 > ファイルを2つ置かないでください（リンクエラーになります）。
-> `firmware/app_main_record.c` は学習データ収集用の別アプリなので、
-> 使うときは `app_main.c` と入れ替えてください（5章参照）。
+> `firmware/` にある `app_main_record.c`（録音用）・`app_motortest.c`（モーター配線の確認用）・
+> `app_pulsetest.c`（振動の長さの確認用）も `usermain()` を持つ別アプリなので、
+> **通常のビルドではコピーしないでください**。録音用を使うときは `app_main.c` と入れ替えます（5章参照）。
 
 ## 3. ビルド設定
 
@@ -160,7 +161,8 @@ venv/Scripts/pip install -r requirements.txt
 ```bash
 cd src
 python train_device.py          # 学習（公開データ＋実機録音、RMS正規化あり）
-python export_cnn_weights.py    # 重みを ../firmware/cnn_weights.h に書き出す
+python export_cnn_weights.py    # 重みを ../c_impl/cnn_weights.h に書き出す
+cp ../c_impl/cnn_weights.h ../firmware/cnn_weights.h   # 実機用にコピー（Windows は copy）
 python validate_rms.py          # Python と C が一致するか検証
 ```
 
