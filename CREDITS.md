@@ -14,10 +14,9 @@
 ※ ライセンス: Creative Commons Attribution 4.0 International (CC BY 4.0)。
 　クレジット表記により再配布・改変が可能。
 
-## その他のフリー効果音（利用無料・生ファイルは再配布しない＝学習専用）
-- 救急車サイレン.mp3（日本のフリー効果音サイト由来。効果音ラボ / DOVA-SYNDROME 等）
-  ※ 生音声はリポジトリに含めない（.gitignore済み）。学習にのみ使用。
-  ※ 正確な出典が分かれば追記する。
+## DOVA-SYNDROME（利用規約に従い使用・生ファイルは再配布しない）
+- 「救急車サイレン1」 作者：稿屋 隆 / DOVA-SYNDROME（https://dova-s.jp/）
+  ※ 学習にのみ使用。生音声はリポジトリに含めない（.gitignore済み）。
 
 ## 公開データセット
 - **ESC-50** (https://github.com/karolpiczak/ESC-50) — CC BY-NC 3.0。学習に使用。
