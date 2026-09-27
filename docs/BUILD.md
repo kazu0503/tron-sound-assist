@@ -160,19 +160,16 @@ venv/Scripts/pip install -r requirements.txt
 
 ```bash
 cd src
-python train_device.py          # 学習（公開データ＋実機録音、RMS正規化あり）
-python export_cnn_weights.py    # 重みを ../c_impl/cnn_weights.h に書き出す
-cp ../c_impl/cnn_weights.h ../firmware/cnn_weights.h   # 実機用にコピー（Windows は copy）
-python validate_rms.py          # Python と C が一致するか検証
-```
-
-`validate_rms.py` は C 側の検証用プログラム `c_impl/infer_mb.exe` を使います。
-重みを書き出し直したら、先に PC 用の gcc で作り直してください（古い重みのまま比較してしまうため）。
-
-```bash
+python train_device.py          # 1. 学習（公開データ＋実機録音、RMS正規化あり）
+python export_cnn_weights.py    # 2. 重みを ../c_impl/cnn_weights.h に書き出す
+cp ../c_impl/cnn_weights.h ../firmware/cnn_weights.h   # 3. 実機用にコピー（Windows は copy）
 cd ../c_impl
-gcc -O2 -o infer_mb infer_mb.c -lm
+gcc -O2 -o infer_mb infer_mb.c -lm   # 4. PC用の検証プログラムを新しい重みで作り直す
+cd ../src
+python validate_rms.py          # 5. Python と C が一致するか検証
 ```
+
+4 を飛ばすと、`validate_rms.py` が古い重みの検証プログラムと比較してしまうので注意してください。
 
 `validate_rms.py` は次の2点を確認します。
 1. Python（学習側）と C（実機側）の出力が一致するか（誤差 1e-5 未満）

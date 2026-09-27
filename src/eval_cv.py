@@ -98,11 +98,11 @@ def main():
          np.concatenate(acc["pub_noisy"][0]), np.concatenate(acc["pub_noisy"][1]))
     show("★実機録音データ", np.concatenate(acc["dev"][0]), np.concatenate(acc["dev"][1]))
 
-    # 通知の条件(サイレン: 確率0.6以上, クラクション: 確率0.7以上なら1回)で見た「その他」の誤報窓数
+    # 実機の通知はどの条件でも「その窓の確信度が0.6以上」が必要(連続判定の場合も2回目は0.6以上)。
     yd = np.concatenate(acc["dev"][0]); pd = np.concatenate(dev_prob)
     oth = yd == C.CLASS_TO_ID["other"]
-    fa = oth & ((pd[:, 0] >= 0.6) | (pd[:, 1] >= 0.7))
-    print(f"\n通知レベルの誤報候補(その他{oth.sum()}窓中): {int(fa.sum())}窓  (サイレン>=0.6 または クラクション>=0.7)")
+    fa = oth & ((pd[:, 0] >= 0.6) | (pd[:, 1] >= 0.6))
+    print(f"\n通知が出うる窓(その他{oth.sum()}窓中): {int(fa.sum())}窓  (サイレンかクラクションの確率>=0.6)  最大 {pd[oth][:, :2].max():.3f}")
     np.savez(os.environ.get("CV_OUT", "cv_dev_probs.npz"), y=yd, prob=pd)
 
 
