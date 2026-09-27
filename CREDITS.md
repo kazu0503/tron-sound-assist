@@ -31,7 +31,7 @@
   実機のマイク特性に合わせるため学習に使用（siren 9 / car_horn 11 / other 47）。
   サイレンとクラクションは、次のYouTubeの効果音をスマートフォンで再生し、micro:bitのマイクで録音しました。
   利用条件は、各動画の概要欄の記載です（2026年9月27日確認）。
-  - サイレン：kamada CH の再生リスト（https://www.youtube.com/playlist?list=PLT21gaEOBQw7VQ-q0LW02ldo-hT7m5bGb）の緊急車両サイレンの動画
+  - サイレン：kamada CH の再生リスト（https://www.youtube.com/playlist?list=PLT21gaEOBQw7VQ-q0LW02ldo-hT7m5bGb）の動画（救急車・消防車・パトカーなど、リスト内の全9本。アメリカのパトカーのサイレンを含む）
     （例：https://www.youtube.com/watch?v=qL7o1hU9wKE 、https://www.youtube.com/watch?v=S7NpBgtxSak）。
     タイトルに「フリー素材」とあり、概要欄には「YouTube動画・TikTok・自主制作映像・イベント演出など、さまざまな場面でご活用いただけます」
     と書かれています。利用条件の詳しい記載はなく、AI学習への利用を許可または禁止する記載もありません。
