@@ -48,6 +48,9 @@
 #define HORN_SINGLE_TH  700
 #define HOLD_MS     3000            /* 通知を保持する時間 */
 
+/* 起動時に表示する版。本体のプログラムとGitHubのどの版か見分けるため */
+#define FW_VERSION  "v2 (2026-09-27, model retrained)"
+
 /* ---------------- micro:bit v2 LEDマトリクス ---------------- */
 /* 行をHIGH・列をLOWにするとそのLEDが点く。1行まるごと点けるので
  * ダイナミック点灯(多重化)は不要＝T_notifyが単純に保てる。
@@ -273,6 +276,7 @@ EXPORT INT usermain(void)
 	ID tid;
 
 	tm_putstring((UB*)"\n=== Sound Assist (RTOS tasks) ===\n");
+	tm_putstring((UB*)"firmware: " FW_VERSION "\n");
 	led_setup();
 	led_row(-1);
 	motor_setup();

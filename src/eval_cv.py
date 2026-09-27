@@ -56,6 +56,7 @@ def main():
     other_id = C.CLASS_TO_ID["other"]
 
     acc = {"pub": ([], []), "pub_noisy": ([], []), "dev": ([], [])}
+    dev_prob = []
 
     for test_fold in range(1, 6):
         print(f"\n{'='*60}\nfold{test_fold} をテストにして学習中...\n{'='*60}")
@@ -87,6 +88,8 @@ def main():
         if dev_te:
             p, y = predict(model, dev_te, mu, sd)
             acc["dev"][0].append(y); acc["dev"][1].append(p)
+            Xd_te = np.stack([feat(w) for (w, c, f, s) in dev_te])
+            dev_prob.append(model.predict(((Xd_te - mu) / sd).reshape(-1, F.N_MELS, _NFRAMES, 1), verbose=0))
         print(f"  fold{test_fold} 完了")
 
     print(f"\n\n{'#'*60}\n5分割交差検証の総合結果\n{'#'*60}")
@@ -94,6 +97,13 @@ def main():
     show(f"公開データ・雑音入り(SNR {TEST_SNR}dB)",
          np.concatenate(acc["pub_noisy"][0]), np.concatenate(acc["pub_noisy"][1]))
     show("★実機録音データ", np.concatenate(acc["dev"][0]), np.concatenate(acc["dev"][1]))
+
+    # 通知の条件(サイレン: 確率0.6以上, クラクション: 確率0.7以上なら1回)で見た「その他」の誤報窓数
+    yd = np.concatenate(acc["dev"][0]); pd = np.concatenate(dev_prob)
+    oth = yd == C.CLASS_TO_ID["other"]
+    fa = oth & ((pd[:, 0] >= 0.6) | (pd[:, 1] >= 0.7))
+    print(f"\n通知レベルの誤報候補(その他{oth.sum()}窓中): {int(fa.sum())}窓  (サイレン>=0.6 または クラクション>=0.7)")
+    np.savez(os.environ.get("CV_OUT", "cv_dev_probs.npz"), y=yd, prob=pd)
 
 
 if __name__ == "__main__":

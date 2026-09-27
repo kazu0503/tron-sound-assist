@@ -166,6 +166,14 @@ cp ../c_impl/cnn_weights.h ../firmware/cnn_weights.h   # 実機用にコピー�
 python validate_rms.py          # Python と C が一致するか検証
 ```
 
+`validate_rms.py` は C 側の検証用プログラム `c_impl/infer_mb.exe` を使います。
+重みを書き出し直したら、先に PC 用の gcc で作り直してください（古い重みのまま比較してしまうため）。
+
+```bash
+cd ../c_impl
+gcc -O2 -o infer_mb infer_mb.c -lm
+```
+
 `validate_rms.py` は次の2点を確認します。
 1. Python（学習側）と C（実機側）の出力が一致するか（誤差 1e-5 未満）
 2. 入力音量を変えても出力が変わらないか（レベル不変性）
