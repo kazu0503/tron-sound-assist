@@ -90,7 +90,7 @@ make -C <展開先>/mtkernel_3/build_make all
 ```bash
 arm-none-eabi-size <展開先>/mtkernel_3/build_make/mtkernel_3.elf
 #   text    data     bss     dec
-#  86304    1152  104516  191972      ← bss(RAM) が 128KB 未満であること
+#  86804    1152  104516  192472      ← bss(RAM) が 128KB 未満であること
 ```
 
 ## 4. 書き込みと動作確認
